@@ -1,3 +1,6 @@
+
+!!!Please add user/group: samba/samba (2000/2000) at your host OS
+
 Build docker image
 ```
 docker build -t jantoth/samba-tuke:v0.0.1 .
