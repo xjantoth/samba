@@ -1,12 +1,7 @@
-# samba-alpine
-A simple and super lightweight Samba docker container, based on the latest Alpine Linux base image 🐧🐋💻.
-
-By default, the share will be accessible read-only for everyone, with write access for user "rio" with password "letsdance". See smb.conf for details, or feel free to use your own config (see below).
-
-Runs Samba's smbd and nmbd within the same container, using supervisord. Due to the fact that nmbd wants to broadcast
-and become the "local master" on your subnet, you need to supply the "--network host" flag to make the server visible to the hosts subnet (likely your LAN).
-
-Mapping the ports alone is likely not sufficient for proper discovery as the processes inside the container are only aware of the internal Docker network, and not the host network. Maybe there's a config switch somewhere to supply a target broadcast network? In any case, directly accessing the shares works just fine this way.
+Build docker image
+```
+docker build -t jantoth/samba-tuke:v0.0.1 .
+```
 
 Quick start for the impatient (discovery on your network will work fine):
 ```shell
