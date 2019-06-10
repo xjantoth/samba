@@ -1,6 +1,7 @@
 Build docker image
 ```
 docker build -t jantoth/samba-tuke:v0.0.1 .
+docker build --build-arg PASSWORD=Start123# -t jantoth/samba-tuke:v0.0.1 .
 ```
 
 Quick start for the impatient (discovery on your network will work fine):

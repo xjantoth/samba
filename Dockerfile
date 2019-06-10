@@ -1,3 +1,5 @@
+ARG PASSWORD
+
 FROM alpine:latest
 LABEL MAINTAINER="Jan Toth <jan.toth@gmail.com>"
 
@@ -14,7 +16,7 @@ COPY *.conf /config/
 RUN addgroup -g 2000 samba && adduser -D -H -G samba -s /bin/false -u 2000 samba
 
 # create a samba user matching our user from above with a very simple password ("letsdance")
-RUN echo -e "Start123#\nStart123#" | smbpasswd -a -s -c /config/smb.conf samba
+RUN echo -e "$PASSWORD\n$PASSWORD" | smbpasswd -a -s -c /config/smb.conf samba
 
 # volume mappings
 VOLUME /config /opt/share
