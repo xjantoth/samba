@@ -1,6 +1,7 @@
+FROM alpine:latest
+
 ARG PASSWORD
 
-FROM alpine:latest
 LABEL MAINTAINER="Jan Toth <jan.toth@gmail.com>"
 
 # upgrade base system and install samba and supervisord
