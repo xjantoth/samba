@@ -48,12 +48,20 @@ firewall-cmd --list-all
 Build docker image
 ```bash
 docker build -t jantoth/samba-tuke:v0.0.1 .
-docker build --build-arg PASSWORD=Start123# -t jantoth/samba-tuke:v0.0.1 .
+docker build --build-arg PASSWORD=St..# -t jantoth/samba-tuke:v0.0.1 .
 ```
 
 Quick start:
 ```bash
-docker run -d -p 135:135/tcp -p 137:137/udp -p 138:138/udp -p 139:139/tcp -p 445:445/tcp -v /opt/vg_11-.../SAMBA_los.../:/opt/share/ --name samba jantoth/samba-tuke:v0.0.1
+docker run -d \
+       -p 135:135/tcp \
+       -p 137:137/udp \
+       -p 138:138/udp \
+       -p 139:139/tcp \
+       -p 445:445/tcp \
+       -v /opt/vg_11-.../SAMBA_los.../:/opt/share/ \
+       --name samba \
+       jantoth/samba-tuke:v0.0.1
 ```
 
 Stop samba in docker:
