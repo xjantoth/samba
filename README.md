@@ -11,6 +11,10 @@ Please setup SELINUX at your host filesystem
 
 ```bash
 chcon -R unconfined_u:object_r:usr_t:s0 /opt/vg_11-...
+
+semanage fcontext -a -t usr_t '/opt/vg_11-lv_backup_vg_11(/.*)?'
+restorecon -R -v /opt/vg_11-lv_backup_vg_11
+
 ```
 
 Double-check SELINUX settings
