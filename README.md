@@ -69,3 +69,55 @@ Stop samba in docker:
 docker stop samba; docker rm samba
 ```
 
+
+
+
+```bash
+#!/usr/bin/env bash
+
+echo -e "Checking for docker daemon started ..."
+
+COUNT=0
+
+until [ "`systemctl is-active docker`" == "active" ]; do
+    
+    sleep 7;
+    COUNT=$((COUNT+1))
+    if [[ ${COUNT} == 100 ]]; then
+        echo -e "Breaking out of until loop: ${COUNT} too many retries!!! Could not start SAMBA because docker is down"
+        exit 1
+    fi
+done;
+
+echo "Cotinue starting SAMBA ..."
+
+
+docker stop samba && docker rm samba ||  :
+docker run -d  -p 135:135/tcp \
+       -p 137:137/udp \
+       -p 138:138/udp \
+       -p 139:139/tcp \
+       -p 445:445/tcp \
+       -v /opt/vg_11-lv_backup_vg_11/SAMBA_los.fei.tuke/:/opt/share/ \
+       --name samba  \
+       jantoth/samba-tuke:v0.0.1
+
+```
+
+
+Crontab
+
+```bash
+crontab  -l
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+0 23 * * * rsync -avhx /opt/vg_11-lv_backup_vg_11/SAMBA.../* /opt/vg_22-lv_backup_vg_22/SAMBA.../
+@reboot /opt/scripts/start-samba-docker.sh > /opt/start-samba-docker.log 2>&1
+```
