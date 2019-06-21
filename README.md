@@ -121,3 +121,9 @@ crontab  -l
 0 23 * * * rsync -avhx /opt/vg_11-lv_backup_vg_11/SAMBA.../* /opt/vg_22-lv_backup_vg_22/SAMBA.../
 @reboot /opt/scripts/start-samba-docker.sh > /opt/start-samba-docker.log 2>&1
 ```
+
+
+Connect to SAMBA
+```bash
+smbclient //127.0.0.1/samba -U samba -W SAMBA
+```
