@@ -5,6 +5,9 @@ groupadd -g 2000 samba
 useradd -g  2000 -u 2000 samba -s /usr/sbin/nologin
 chown -R samba.samba /opt/vg_11-...
 
+groupadd -g 3000 student
+useradd -g  3000 -u 3000 student -s /usr/sbin/nologin
+chown -R student.student /opt/student...
 ```
 
 Please setup SELINUX at your host filesystem
@@ -49,6 +52,8 @@ Build docker image
 ```bash
 docker build -t jantoth/samba-tuke:v0.0.1 .
 docker build --build-arg PASSWORD=St..# -t jantoth/samba-tuke:v0.0.1 .
+docker build --build-arg STUDENT_PASSWORD=Stu# --build-arg PASSWORD=S# -t jantoth/samba-tuke:v0.0.2 .
+
 ```
 
 Quick start:
@@ -60,8 +65,9 @@ docker run -d \
        -p 139:139/tcp \
        -p 445:445/tcp \
        -v /opt/vg_11-.../SAMBA_los.../:/opt/share/ \
+       -v /opt/student:/opt/student/ \
        --name samba \
-       jantoth/samba-tuke:v0.0.1
+       jantoth/samba-tuke:v0.0.2
 ```
 
 Stop samba in docker:
@@ -99,8 +105,9 @@ docker run -d  -p 135:135/tcp \
        -p 139:139/tcp \
        -p 445:445/tcp \
        -v /opt/vg_11-lv_backup_vg_11/SAMBA_los.fei.tuke/:/opt/share/ \
+       -v /opt/student/:/opt/student/ \
        --name samba  \
-       jantoth/samba-tuke:v0.0.1
+       jantoth/samba-tuke:v0.0.2
 
 ```
 
@@ -119,11 +126,12 @@ crontab  -l
 # *  *  *  *  * user-name  command to be executed
 
 0 23 * * * rsync -avhx /opt/vg_11-lv_backup_vg_11/SAMBA.../* /opt/vg_22-lv_backup_vg_22/SAMBA.../
-@reboot /opt/scripts/start-samba-docker.sh > /opt/start-samba-docker.log 2>&1
+@reboot /opt/scripts/start-samba-docker.sh >> /opt/start-samba-docker.log 2>&1
 ```
 
 
 Connect to SAMBA
 ```bash
 smbclient //127.0.0.1/samba -U samba -W SAMBA
+smbclient //127.0.0.1/student -U student -W SAMBA
 ```

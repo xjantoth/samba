@@ -1,6 +1,7 @@
 FROM alpine:latest
 
 ARG PASSWORD
+ARG STUDENT_PASSWORD
 
 LABEL MAINTAINER="Jan Toth <jan.toth@gmail.com>"
 
@@ -15,10 +16,13 @@ COPY *.conf /config/
 
 # add a non-root user and group called "rio" with no password, no home dir, no shell, and gid/uid set to 1000
 RUN addgroup -g 2000 samba && adduser -D -H -G samba -s /bin/false -u 2000 samba
+RUN addgroup -g 3000 student && adduser -D -H -G student -s /bin/false -u 3000 student
 
 # create a samba user matching our user from above with a very simple password ("letsdance")
 RUN echo -e "$PASSWORD\n$PASSWORD" | smbpasswd -a -s -c /config/smb.conf samba
 
+# create a "student" user matching our user from above with a very simple password ("letsdance")
+RUN echo -e "$STUDENT_PASSWORD\n$STUDENT_PASSWORD" | smbpasswd -a -s -c /config/smb.conf student
 # volume mappings
 VOLUME /config /opt/share
 
